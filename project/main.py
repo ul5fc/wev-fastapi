@@ -9,12 +9,22 @@ from fastapi.templating import Jinja2Templates
 import yt_dlp
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
 
-DOWNLOAD_DIR = "downloads"
-CACHE_FILE = "cache.json"
+# main.py のあるディレクトリを基準に static と templates のパスを設定
+BASE_DIR = os.path.dirname(__file__)
+STATIC_DIR = os.path.join(BASE_DIR, "static")
+TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
+
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+templates = Jinja2Templates(directory=TEMPLATES_DIR)
+
+DOWNLOAD_DIR = os.path.join(BASE_DIR, "downloads")
+CACHE_FILE = os.path.join(BASE_DIR, "cache.json")
+
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
+os.makedirs(STATIC_DIR, exist_ok=True)
+os.makedirs(TEMPLATES_DIR, exist_ok=True)
+
 if not os.path.exists(CACHE_FILE):
     with open(CACHE_FILE, "w") as f:
         json.dump({}, f)
@@ -77,7 +87,6 @@ async def download_video(
                 filename = os.path.splitext(filename)[0] + ".mp3"
 
         if not os.path.exists(filename):
-
             print(f"Error: File not found after download: {filename}")
             raise RuntimeError(f"File not found: {filename}")
 
