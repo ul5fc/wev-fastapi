@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Downloader</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Downloader</h1>
+    <form method="post" action="/download">
+      <label>URL:</label><br>
+      <textarea name="urls" rows="5" placeholder="https://www.youtube.com/watch?v=..."></textarea><br>
+
+      <label>画質:</label>
+      <select name="quality">
+        <option value="1080">1080p</option>
+        <option value="720">720p</option>
+        <option value="480">480p</option>
+        <option value="360">360p</option>
+      </select><br>
+
+      <label><input type="checkbox" name="only_audio"> MP3</label><br><br>
+
+      <button type="submit">ダウンロード</button>
+    </form>
+  </div>
+</body>
+</html>
